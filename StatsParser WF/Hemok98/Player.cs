@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StatsParser_WF
+namespace Hemok98
 {
     class Player
     {
@@ -33,12 +33,6 @@ namespace StatsParser_WF
 
         public bool СompareStats(Player other, int statNum)
         {
-            //if (this.statsCount[statNum].Length > other.statsCount[statNum].Length) return true;
-            //if (this.statsCount[statNum].Length < other.statsCount[statNum].Length) return false;
-            //for (int i = 0; i < this.statsCount[statNum].Length; i++)
-            //    if (this.statsCount[statNum][i] < other.statsCount[statNum][i]) return false;
-            //if ( this.statsCount[statNum].CompareTo(other.statsCount[statNum]) >=0 ) return true;
-            //return true;
             return int.Parse(this.statsCount[statNum]) > int.Parse(other.statsCount[statNum]);
         }
 

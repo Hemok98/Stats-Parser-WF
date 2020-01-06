@@ -34,5 +34,18 @@ namespace StatsParser_WF.Properties {
                 this["statsSaves"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("stat.playerKills|:crossed_swords: Убийств;\r\nuseItem.minecraft.bow|:bow_and_arrow:" +
+            " Выстрелов из лука;\r\nstat.deaths|:skull_crossbones: Смертей;")]
+        public string embedAssociations {
+            get {
+                return ((string)(this["embedAssociations"]));
+            }
+            set {
+                this["embedAssociations"] = value;
+            }
+        }
     }
 }

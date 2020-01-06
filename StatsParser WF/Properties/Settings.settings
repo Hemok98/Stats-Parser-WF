@@ -6,5 +6,10 @@
       <Value Profile="(Default)">sneak_time
 jump</Value>
     </Setting>
+    <Setting Name="embedAssociations" Type="System.String" Scope="User">
+      <Value Profile="(Default)">stat.playerKills|:crossed_swords: Убийств;
+useItem.minecraft.bow|:bow_and_arrow: Выстрелов из лука;
+stat.deaths|:skull_crossbones: Смертей;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

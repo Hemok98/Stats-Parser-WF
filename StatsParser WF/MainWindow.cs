@@ -17,11 +17,14 @@ namespace StatsParser_WF
             InitializeComponent();
         }
 
-        private Player[] players;
+        private Hemok98.Player[] players;
+        private string[] bestPlayer;
+        string[] statsNames;
 
         private void button1_Click(object sender, EventArgs e)
         {
             string dirName = directoryTextbox.Text;
+            
             OutputTextBox.Text = "";
 
             if (!System.IO.Directory.Exists(dirName)) return;
@@ -32,16 +35,17 @@ namespace StatsParser_WF
             Properties.Settings.Default.statsSaves = statsTextbox.Text;
             Properties.Settings.Default.Save();
 
-            Player.SetStatsNames(str);
+            Hemok98.Player.SetStatsNames(str);
 
             str = str.Replace("\r\n", "\n");
-            string[] statsNames = str.Split('\n');
+            statsNames = str.Split('\n');
                 
             //string statsMass[statsTextbox.Text.]
 
             string[] files = System.IO.Directory.GetFiles(dirName);
                 
-            this.players = new Player[files.Length];
+            this.players = new Hemok98.Player[files.Length];
+            this.bestPlayer = new string[statsNames.Length];
 
             int filesCounter = 0;
             foreach (string fileName in files)
@@ -83,7 +87,7 @@ namespace StatsParser_WF
                     html = html.Substring(0, html.IndexOf("\""));
                 }
 
-                this.players[filesCounter] = new Player(html, uuid);
+                this.players[filesCounter] = new Hemok98.Player(html, uuid);
                 //в итоге в html хранится имя игрока
                 //OutputTextBox.Text += "\"" + html + "\"" + "\r\n";
 
@@ -100,7 +104,7 @@ namespace StatsParser_WF
                     for (int statsCounter = 0; statsCounter < statsNames.Length; statsCounter++)
                     {
                         //OutputTextBox.Text += statsNames[statsCounter] + " - "  + FindStat(textFromFile, statsNames[statsCounter])  +  "\r\n";
-                        this.players[filesCounter].SetStatsCount(FindStat(textFromFile, statsNames[statsCounter]),statsCounter);
+                        this.players[filesCounter].SetStatsCount(FindStat(textFromFile, statsNames[statsCounter]), statsCounter);
                     }
                     //OutputTextBox.Text += "sneak - " + sneak + "\r\n";
                 }
@@ -108,16 +112,16 @@ namespace StatsParser_WF
                 //OutputTextBox.Text +="\r\n";
                 filesCounter++;
             }
-            // D:\stats
+            //D:\stats
 
             int k = 0;
-            for(int statsCount = 0; statsCount < Player.GetStatsCount; statsCount++)
+            for (int statsCount = 0; statsCount < Hemok98.Player.GetStatsCount; statsCount++)
             {
                 for (int i = 0; i < this.players.Length; i++)
-                    for (int j = 0; j < this.players.Length - 1 ; j++)
-                        if ( !this.players[j].СompareStats(this.players[j+1],statsCount) )
+                    for (int j = 0; j < this.players.Length - 1; j++)
+                        if (!this.players[j].СompareStats(this.players[j + 1], statsCount))
                         {
-                            Player sw = this.players[j];
+                            Hemok98.Player sw = this.players[j];
                             this.players[j] = this.players[j + 1];
                             this.players[j + 1] = sw;
                             k++;
@@ -125,30 +129,98 @@ namespace StatsParser_WF
                 //foreach (Player playerOut in players)
                 //    this.OutputTextBox.Text += playerOut.ToString();
                 //break;
-                this.OutputTextBox.Text += this.players[0].Name + " - " + this.players[0].GetStatCount(statsCount) + "\r\n";
+                this.bestPlayer[statsCount] = this.players[0].Name + " - " + this.players[0].GetStatCount(statsCount);
+                this.OutputTextBox.Text += statsNames[statsCount] + "\r\n" + this.players[0].Name + " - " + this.players[0].GetStatCount(statsCount) + "\r\n";
             }
-            //this.OutputTextBox.Text += " " + Player.GetStatsCount.ToString();
-            //foreach (Player playerOut in players)
-            //    this.OutputTextBox.Text += playerOut.ToString();
+
+
+            this.OutputTextBox.Text += "\r\n\r\n";
+            //this.OutputTextBox.Text += " " + Hemok98.Player.GetStatsCount.ToString();
+            foreach (Hemok98.Player playerOut in players)
+                this.OutputTextBox.Text += playerOut.Name + "\r\n";
         }
 
-        private string FindStat(string file, string statName)
+        private string FindStat(string json, string statName)
         {
             string stat = "0";
-            if (file.IndexOf(statName) != -1)
+            if ( statName.IndexOf("/") != -1)
             {
-                file = file.Substring(file.IndexOf(statName) + statName.Length + 2);
+                string statParam = statName.Substring(0, statName.IndexOf("/"));
+                statName = statName.Substring(statName.IndexOf("/") + 1);
+                //this.OutputTextBox.Text += statParam + "-" + statName + "\r\n";
+                if (json.IndexOf(statParam) == -1) return stat;
+                json = json.Substring(json.IndexOf(statParam) + 3);
+                json = json.Substring(0, json.IndexOf("}"));
+            }
+
+            //if (statName == "minecraft:bow")
+            //{
+            //    json = json.Substring(json.IndexOf("minecraft:used")+3);
+            //    json = json.Substring(0,json.IndexOf("}"));
+            //}
+
+            if (json.IndexOf(statName) != -1)
+            {
+                json = json.Substring(json.IndexOf(statName) + statName.Length + 2);
                 string numbers = " 0123456789";
                 int i = 0;
                 stat = "";
-                while ( numbers.IndexOf(file[i]) !=-1)
+                while ((i < json.Length) && (numbers.IndexOf(json[i]) !=-1))
                 {                   
-                    if (file[i]!=' ') stat += file[i];
+                    if (json[i]!=' ') stat += json[i];
                     i++;
                 }
                 //textBox1.Text += "!";
             }
             return stat;
+        }
+
+        private void RadioClick(object sender, MouseEventArgs e)
+        {
+            this.flag = !this.flag;
+            CalculateChoiseRadiobutton.Checked = flag;
+        }
+        private bool flag = true;
+
+        private void ChangeShownTextbox(object sender, EventArgs e)
+        {
+            bool flag = true;
+            if (this.ChangeTextboxTrackbar.Value == 0)
+                flag = true;
+            else flag = false;
+            this.statsTextbox.Visible = flag;
+            this.embedTextbox.Visible = !flag;
+        }
+
+        private void GetEmbedButton_Click(object sender, EventArgs e)
+        {
+            if (players == null) return;
+            Properties.Settings.Default.embedAssociations = embedTextbox.Text;
+            Properties.Settings.Default.Save();
+            string final = "/embed { \"color\": 712122, \"fields\": [{\"name\": \"Статистика прошедшего ивента Quartz Defenders\",\"value\": \":green_square:Победила зелёная команда: `jjshade2`, `_BrawlStars_`, `LinusHandboll`, `GoldenGuppies`, `Fon4uk` \\nНаибольшее число:\\n\" }";
+
+            for (int i = 0; i < bestPlayer.Length; i++)
+            {
+                final += ",{\"name\": \"" + statsNames[i] + "\",\"value\": \"`" + bestPlayer[i] + "`\",\"inline\": true}";
+            }
+            final += "]}";
+            //string test = "dfsd";
+            //int n = test.Count;
+            string associations = this.embedTextbox.Text;
+            if (!associations.EndsWith("\r\n")) associations += "\r\n";
+            this.OutputTextBox.Text = "";
+
+            while (associations.IndexOf(';') != -1)
+            {
+                string statName = associations.Substring(0, associations.IndexOf('|')),
+                 discordDisplay = associations.Substring(associations.IndexOf('|') + 1, associations.IndexOf(';') - associations.IndexOf('|')-1);
+                //this.OutputTextBox.Text += statName  + discordDisplay + "\r\n";
+                //final += final.IndexOf(statName).ToString();
+                final = final.Replace(statName, discordDisplay);
+                associations = associations.Substring(associations.IndexOf(';') + 3);
+            }
+
+            this.OutputTextBox.Text = final;
         }
     }
 }
