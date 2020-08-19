@@ -13,6 +13,8 @@ namespace Hemok98
         private Player[] players;
 
         private Player[] bestPlayers;
+        private string embed = "";
+        private int bestPlayersCount = 3;
         
         public bool LoadStats(string directory)
         {
@@ -73,6 +75,8 @@ namespace Hemok98
                 player.Parse(statsNames);
             }
 
+            this.embed = "{\"embed\":{\"color\":49408,\"fields\":[";
+
             for (int statIter = 0; statIter < statsNames.Length; statIter++)
             {
 
@@ -94,14 +98,28 @@ namespace Hemok98
                     }
                 }
 
+                embed += "{\"name\":\"" + statsNames[statIter] + "\",\"value\":\"`";
                 final += statsNames[statIter] + "\r\n";
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < bestPlayersCount; i++)
                 {
+                    //final += "- " + bestPlayers[i].Name + " " + (float)(bestPlayers[i].getStat(statIter) / 1728000.0) + "\r\n";
                     final += "- " + bestPlayers[i].Name + " " + bestPlayers[i].getStat(statIter) + "\r\n";
+                    embed += bestPlayers[i].Name + " - " + bestPlayers[i].getStat(statIter);
+                    if (i != bestPlayersCount - 1) embed += "\\n";
                 }
+                embed += "`\",\"inline\":true}";
+                if (statIter != statsNames.Length - 1) embed += ",";
+                //isSortedStats = true;
             }
 
+            embed += "],\"title\":\":bar_chart: Статистика:\"}}";
+
             return final;
+        }
+
+        public string getEmbed()
+        {
+            return this.embed;
         }
     }
 }

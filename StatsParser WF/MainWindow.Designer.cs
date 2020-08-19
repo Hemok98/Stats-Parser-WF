@@ -39,9 +39,11 @@
             this.CalculateChoiseRadiobutton = new System.Windows.Forms.RadioButton();
             this.ChangeTextboxTrackbar = new System.Windows.Forms.TrackBar();
             this.EmbedLabel = new System.Windows.Forms.Label();
-            this.getEmbedButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.embedButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ChangeTextboxTrackbar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // OutputTextBox
@@ -142,16 +144,6 @@
             this.EmbedLabel.Text = "Embed";
             this.EmbedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // getEmbedButton
-            // 
-            this.getEmbedButton.Location = new System.Drawing.Point(697, 99);
-            this.getEmbedButton.Name = "getEmbedButton";
-            this.getEmbedButton.Size = new System.Drawing.Size(93, 28);
-            this.getEmbedButton.TabIndex = 9;
-            this.getEmbedButton.Text = "Get Embed";
-            this.getEmbedButton.UseVisualStyleBackColor = true;
-            this.getEmbedButton.Click += new System.EventHandler(this.GetEmbedButton_Click);
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(590, 133);
@@ -162,13 +154,45 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(685, 100);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(90, 20);
+            this.numericUpDown1.TabIndex = 2;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // embedButton
+            // 
+            this.embedButton.Location = new System.Drawing.Point(697, 99);
+            this.embedButton.Name = "embedButton";
+            this.embedButton.Size = new System.Drawing.Size(93, 28);
+            this.embedButton.TabIndex = 11;
+            this.embedButton.Text = "get Embed";
+            this.embedButton.UseVisualStyleBackColor = true;
+            this.embedButton.Click += new System.EventHandler(this.embedButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(798, 602);
+            this.Controls.Add(this.embedButton);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.getEmbedButton);
             this.Controls.Add(this.EmbedLabel);
             this.Controls.Add(this.ChangeTextboxTrackbar);
             this.Controls.Add(this.CalculateChoiseRadiobutton);
@@ -180,9 +204,13 @@
             this.Controls.Add(this.getInfoButton);
             this.Controls.Add(this.OutputTextBox);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(814, 641);
+            this.MinimumSize = new System.Drawing.Size(814, 641);
             this.Name = "MainForm";
-            this.Text = "Minecraft Stats Parser";
+            this.Text = "Minecraft Stats Parser by Hemok98";
             ((System.ComponentModel.ISupportInitialize)(this.ChangeTextboxTrackbar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,8 +228,9 @@
         private System.Windows.Forms.RadioButton CalculateChoiseRadiobutton;
         private System.Windows.Forms.TrackBar ChangeTextboxTrackbar;
         private System.Windows.Forms.Label EmbedLabel;
-        private System.Windows.Forms.Button getEmbedButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button embedButton;
     }
 }
 
